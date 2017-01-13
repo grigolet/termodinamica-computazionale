@@ -11,6 +11,6 @@ function [E_k, T_istantanea] = energia_cinetica(vx, vy, vz, numero_atomi, mass)
     end
 
     E_k = mass*(vx2_tot + vy2_tot + vz2_tot)/2;
-    T_istantanea = 1/3 * 11603 * E_k / numero_atomi;
+    T_istantanea = 1/3 * 11603 * E_k;
 
 end

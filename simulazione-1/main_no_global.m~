@@ -1,6 +1,5 @@
 clear all;
 close all;
-delete('simulazione.txt');
 
 % parametri di configurazione
 file_name    = '../fccseconditerzi.txt';
@@ -65,7 +64,7 @@ for i=1:n_iterazioni
     % calcolo l'energia cinetica e la temperatura
     [e_k(i), t_istantanea(i)] = energia_cinetica(vx, vy, vz, numero_atomi, mass);
     e_tot(i) = e_k(i) + energia_potenziale;
-    fprintf(write_file, '%f %f %f\n', energia_potenziale, e_k(i), t_istantanea(i));
+    fprintf(write_file, '%f %f %f\n', energia_potenziale, e_tot(i), t_istantanea(i));
 
 end
 

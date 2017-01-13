@@ -1,6 +1,7 @@
 function [vx, vy, vz, Ex, Ey, Ez, temperatura_efficace, ...
     temperatura_efficace_shift, temperatura_efficace_changed] = ... 
     velocita_iniziali (numero_atomi, temperatura, massa, seed)
+
     % generazione dal seed
     rng(seed);
 
