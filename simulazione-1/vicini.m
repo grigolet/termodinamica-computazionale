@@ -16,15 +16,18 @@ function [numero_vicini, elenco_vicini, epot] = vicini(x, y, z, ...
                     elenco_vicini(i, numero_vicini(i)) = j;
                     % calcolo l'energia tra atomo i e k
                     if distanza_tot <= r_prime
-                        epot = epot + 2*epsilon*((sigma/distanza_tot)^(12) ... 
+                        epot = epot + 4*epsilon*((sigma/distanza_tot)^(12) ... 
                                     - (sigma/distanza_tot)^6);
 
                     else
                         [epot_istantanea, ~] = polinomial(distanza_tot, r_prime, r_cutoff, sigma, epsilon);
-                        epot = epot - epot_istantanea;
+                        epot = epot + epot_istantanea;
                     end
-                end            
+                end
+                
             end          
-        end 
+        end
+
     end
+    epot = epot * 0.5;
 end
