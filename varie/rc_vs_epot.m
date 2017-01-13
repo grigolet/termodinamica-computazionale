@@ -16,7 +16,7 @@ r_cutoff = [r_min_cutoff:step:r_max_cutoff];
 r_prime = r_cutoff - step_r_prime;
 
 % carico i dati
-load fccseconditerzi.txt
+load ../fccseconditerzi.txt
 x0 = fccseconditerzi(:,1); %prendo la prima colonna
 y0 = fccseconditerzi(:,2); %il ; sopprime l''output
 z0 = fccseconditerzi(:,3);

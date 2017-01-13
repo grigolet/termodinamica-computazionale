@@ -12,7 +12,7 @@ nome_file =strcat('z_vs_epot.dat');
 handle = fopen(nome_file, 'w');
 
 % carico i dati
-load fccseconditerzi.txt
+load ../fccseconditerzi.txt
 x0 = fccseconditerzi(:,1); %prendo la prima colonna
 y0 = fccseconditerzi(:,2); %il ; sopprime l''output
 z0 = fccseconditerzi(:,3);
@@ -38,8 +38,8 @@ for k=1:100
                 distanza_z = (z0(i) - z0(j))^2;
                 distanza_tot = sqrt(distanza_x + distanza_y + distanza_z);
                 if distanza_tot < r_cutoff
-                    %numero_vicini(i) = numero_vicini(i) + 1;
-                    %elenco_vicini(i, numero_vicini(i)) = j;
+                    numero_vicini(i) = numero_vicini(i) + 1;
+                    elenco_vicini(i, numero_vicini(i)) = j;
                     epot_non_corretto = epot_non_corretto + ...
                         2*epsilon*((sigma/distanza_tot)^(12) - (sigma/distanza_tot)^6);
 
