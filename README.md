@@ -149,3 +149,61 @@ non bisogna uscire è $10^{-14} - 10^{-16}$.
 * 800 K
 Si può anche trovare il timestep ideale per 800 K, che è il caso peggiore, ed
 utilizzarlo anche per le altre temperature.
+
+# 13-01
+Si può fare andare il programma più velocemente, senza sacrificare i risultati
+delle traiettorie, energie e temperature calcolate.
+Il metodo si chiama **Metodo delle Gabbie di Verlet**. Dobbiamo implementarla
+senza troppi aiuti.
+Nel nostro programma i cicli più lenti sono i cicli doppi che portano via il
+quadrato del tempo ($ O(numero_{atomi}^2) $). Nonostante abbiamo usato la matrice
+nvic, il nostro programma scala con il quadrato del numero di atomi. Questo è
+dovuto al fatto che ogni volta ricalcoliamo il numero vicini all'interno del
+ciclo più grande.
+Per usare il metodo, nel punto in cui verifichiamo `r<r_prime` bisogna cambiare
+il codice usando tre condizioni
+```{matlab}
+if r < r_prime
+    % calcola con 4*epsilon ...
+else if r < r_c
+    % calcola con il polinomio ...
+else if r > r_c
+    % parte importante
+    epot = epot + 0
+end
+```
+Se non rifacciamo la lista dei vicini e usiamo sempre la stessa, riusciamo a
+capire se gli atomi si sono mossi. Questo perchè se un atomo dovesse uscire dal
+raggio di cutoff grazie alla terza condizione non viene cambiato il suo
+contributo al potenziale. Questo non va bene però se avevo un atomo fuori dalla
+lista dai vicini e dopo un certo delta_t entra nel raggio di cutoff. In questo
+caso è tutto sbagliato.
+
+*Come si fa ad ovviare?*
+Il metodo delle gabbie serve proprio a questo. Introduciamo un nuovo raggio,
+chiamato **Raggio di Verlet**. Dev'essere un po' più grande (per adesso mettiamolo
+a `r_c + 0.4`). Questo sarà il raggio che useremo quando dobbiamo creare la
+lista dei vicini.
+Quindi chiamiamo i vicini una prima volta e consideriamo vicini anche quelli
+compresi tra `r_c` e `r_verlet`. Così facendo quando calcoliamo il potenziale
+se un atomo stava fuori dal raggio di cutoff ma dentro quello di verlet allora
+verrà considerato.
+
+La situazione peggiore che può capitare è quella in cui un atomo esterno al
+raggio di verlet si muove in direzione dell'atomo su cui sto calcolando i vicini
+dopo un'iterazione temporale.
+Allora potrei calcolare lo spostamento massimo e valutare se è minore della
+semidifferenza tra il raggio di cutoff e quello di verlet. Se non è verificata
+la condizione allora ricalcolo i vicini.
+Esempio di codice
+```{matlab id:"ixvl9rce"}
+    vicini(...)
+    for imd=1:12000
+        x = x + ... %calcolo le posizioni
+        % mi calcolo la distanza
+        d = sqrt((x(i) - x_verlet(i))^2 + (...)^2 + (...)^2)
+        if d > 0.4*(r_verlet - r_c)
+            vicini(...)
+        end
+    end
+```
