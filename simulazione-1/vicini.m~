@@ -3,23 +3,20 @@ function [numero_vicini, elenco_vicini, x_verlet, y_verlet, z_verlet] = ...
     % dichiaro la grandezza dei vettori per motivi di performance
     numero_vicini = zeros(numero_atomi);
     elenco_vicini = zeros(numero_atomi, numero_atomi);
-    x_verlet = zeros(numero_atomi, 1);
-    y_verlet = zeros(numero_atomi, 1);
-    z_verlet = zeros(numero_atomi, 1);
-    global n_call;
-    n_call = n_call + 1;
+    x_verlet = zeros(numero_atomi);
+    y_verlet = zeros(numero_atomi);
+    z_verlet = zeros(numero_atomi);
     
     % raggio verlet
     r_verlet = r_cutoff + 0.3;    
     
     for i=1:numero_atomi
-        % salvo le posizioni di verlet
+        % salvo le po
         x_verlet(i) = x(i);
         y_verlet(i) = y(i);
         z_verlet(i) = z(i);
         for j=1:numero_atomi
             if i ~= j
-                % uso le posizioni di verlet per motivi di performance
                 distanza_x = (x_verlet(i) - x(j))^2;
                 distanza_y = (y_verlet(i) - y(j))^2; 
                 distanza_z = (z_verlet(i) - z(j))^2;

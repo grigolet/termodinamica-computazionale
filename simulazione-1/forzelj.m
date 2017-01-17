@@ -1,4 +1,4 @@
-function [fx, fy, fz] = forzelj(epsilon, sigma, x, y, z, numero_vicini, ...
+function [fx, fy, fz, epot] = forzelj(epsilon, sigma, x, y, z, numero_vicini, ...
         elenco_vicini, numero_atomi, r_prime, r_cutoff)
     
     % definisco le variabili
@@ -13,6 +13,7 @@ function [fx, fy, fz] = forzelj(epsilon, sigma, x, y, z, numero_vicini, ...
     bb = -2*cc*r_cutoff - 3*dd*r_cutoff^2;
     % pol = aa + bb*x + cc*x^2 + dd*x^3;
     % pol_derivative = bb + 2*cc*x + 3*dd*x^2;
+    epot = 0;
 
     % definisco i vettori delle forze
     fx = zeros(numero_atomi, 1);
@@ -35,13 +36,24 @@ function [fx, fy, fz] = forzelj(epsilon, sigma, x, y, z, numero_vicini, ...
                            * ( 2*(sigma^6)/(r_ik^6) - 1)/(r_ik^8);
                fz(i) = fz(i) + 24*epsilon*(sigma^6)*(distanza_z) ...
                            * ( 2*(sigma^6)/(r_ik^6) - 1)/(r_ik^8);
+                epot = epot + 4*epsilon*((sigma/distanza_tot)^(12) ... 
+                            - (sigma/distanza_tot)^6);
 
-            else
+
+            elseif r_ik < r_cutoff
                 fx(i) = fx(i) - bb*distanza_x/r_ik - 2*cc*distanza_x - 3*dd*r_ik*distanza_x;
                 fy(i) = fy(i) - bb*distanza_y/r_ik - 2*cc*distanza_y - 3*dd*r_ik*distanza_y;
                 fz(i) = fz(i) - bb*distanza_z/r_ik - 2*cc*distanza_z - 3*dd*r_ik*distanza_z;
+                [epot_istantanea, ~] = polinomial(r_ik, r_prime, r_cutoff, sigma, epsilon);
+                epot = epot + epot_istantanea;
+            else
+                fx(i) = fx(i) + 0;
+                fy(i) = fy(i) + 0;
+                fz(i) = fz(i) + 0;
+                epot = epot + 0;
             end
 
         end
     end
+    epot = epot/2;
 end

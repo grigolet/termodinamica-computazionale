@@ -1,4 +1,4 @@
-data = load('simulazione.txt');
+data = load('simulazione-gabbie.txt');
 
 e_pot  = data(:,1);
 e_k    = data(:,2);

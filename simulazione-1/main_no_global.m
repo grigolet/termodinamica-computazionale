@@ -1,6 +1,6 @@
 clear all;
 close all;
-delete('simulazione.txt');
+delete('simulazione-gabbie.txt');
 
 % parametri di configurazione
 file_name    = '../fccseconditerzi.txt';
@@ -15,6 +15,10 @@ mass         = 108*1.66e-27/16;
 seed         = 16324478;
 n_iterazioni = 1000;
 delta_t      = 1e-15;
+global n_call;
+n_call =  0;
+% inizializzo la distanza massima
+d_max = 0;
 
 % inizializzazione matrici e vettori
 [x, y, z, numero_atomi] = leggi_file(file_name);
@@ -24,35 +28,44 @@ t_istantanea = zeros(n_iterazioni, 1);
 [vx, vy, vz] = velocita_iniziali(numero_atomi, temperature, mass, seed);
 
 % calcolo dei vicini
-[numero_vicini, elenco_vicini, energia_potenziale] = vicini(x, y, z, ...
-       numero_atomi, r_cutoff, r_prime, epsilon, sigma);
+[numero_vicini, elenco_vicini, x_verlet, y_verlet, z_verlet] = vicini(x, y, z, ...
+       numero_atomi, r_cutoff);
 
 % calcolo delle forze
 [fx, fy, fz] = forzelj(epsilon, sigma, x, y, z, numero_vicini, ...
     elenco_vicini, numero_atomi, r_prime, r_cutoff);
 
 % apro il file per la scrittura
-write_file = fopen('simulazione.txt', 'a');
+write_file = fopen('simulazione-gabbie.txt', 'a');
 
 for i=1:n_iterazioni
+    
     
     % ricalcolo le nuove posizioni
     for c=1:numero_atomi
         x(c) = x(c) + vx(c)*delta_t + 1/2*fx(c)/mass*delta_t^2;
         y(c) = y(c) + vy(c)*delta_t + 1/2*fy(c)/mass*delta_t^2;
         z(c) = z(c) + vz(c)*delta_t + 1/2*fz(c)/mass*delta_t^2;
+        distanza = sqrt((x(c)-x_verlet(c))^2 + (y(c)- y_verlet(c))^2 + (z(c)-z_verlet(c))^2);
+        if distanza > d_max
+            d_max = distanza;
+        end
+    end
+    
+    % controllo secondo le gabbie di Verlet
+    if d_max >= 1/2*(0.3)
+        % ricalcolo i vicini
+        [numero_vicini, elenco_vicini, x_verlet, y_verlet, z_verlet] = vicini(x, y, z, ...
+        numero_atomi, r_cutoff);
+        d_max = 0;
     end
 
     fx_vecchia = fx;
     fy_vecchia = fy;
-    fz_vecchia = fz;
-
-    % ricalcolo i vicini
-    [numero_vicini, elenco_vicini, energia_potenziale] = vicini(x, y, z, ...
-        numero_atomi, r_cutoff, r_prime, epsilon, sigma);
+    fz_vecchia = fz;    
     
     % ricalcolo le forze
-    [fx, fy, fz] = forzelj(epsilon, sigma, x, y, z, numero_vicini, ...
+    [fx, fy, fz, energia_potenziale] = forzelj(epsilon, sigma, x, y, z, numero_vicini, ...
         elenco_vicini, numero_atomi, r_prime, r_cutoff);
 
     % calcolo le velocità
@@ -64,7 +77,7 @@ for i=1:n_iterazioni
 
     % calcolo l'energia cinetica e la temperatura
     [e_k(i), t_istantanea(i)] = energia_cinetica(vx, vy, vz, numero_atomi, mass);
-    e_tot(i) = e_k(i) + energia_potenziale;
+    % e_tot(i) = e_k(i) + energia_potenziale;
     fprintf(write_file, '%f %f %f\n', energia_potenziale, e_k(i), t_istantanea(i));
 
 end
