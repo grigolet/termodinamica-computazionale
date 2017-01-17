@@ -17,6 +17,8 @@ n_iterazioni = 1000;
 delta_t      = 1e-15;
 global n_call;
 n_call =  0;
+% inizializzo la distanza massima
+d_max = 0;
 
 % inizializzazione matrici e vettori
 [x, y, z, numero_atomi] = leggi_file(file_name);
@@ -37,8 +39,7 @@ t_istantanea = zeros(n_iterazioni, 1);
 write_file = fopen('simulazione-gabbie.txt', 'a');
 
 for i=1:n_iterazioni
-    % inizializzo la distanza massima
-    d_max = 0;
+    
     
     % ricalcolo le nuove posizioni
     for c=1:numero_atomi
@@ -56,6 +57,7 @@ for i=1:n_iterazioni
         % ricalcolo i vicini
         [numero_vicini, elenco_vicini, x_verlet, y_verlet, z_verlet] = vicini(x, y, z, ...
         numero_atomi, r_cutoff);
+        d_max = 0;
     end
 
     fx_vecchia = fx;
