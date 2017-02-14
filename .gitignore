@@ -1,2 +1,5 @@
 python-implementation/
 simulazione-1/*.m~
+fortran-test/*.bin
+montecarlo/*.bin
+montecarlo/*.mat
