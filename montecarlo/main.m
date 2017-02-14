@@ -1,8 +1,9 @@
 % definizione costanti
+tic
 L = 20;
 n_siti = 25;
 T = 10;
-n_interazioni = 50000;
+n_interazioni = 1000000;
 k = 1/11603.;
 seed = 16324478;
 rng(seed);
@@ -54,6 +55,11 @@ for i=1:n_interazioni
 %     drawnow
 end
 
+% scrittura su file
+file = fopen('data.bin','w');
+fwrite(file, epot_array);
+fclose(file);
+toc
 %     % prendo tutti gli indici non nulli
 %     [x_nn, y_nn] = find(siti);
 %     % prendo tutti gli indici con valore nullo
