@@ -207,3 +207,32 @@ Esempio di codice
         end
     end
 ```
+
+# 24-01
+Se voglio fare una simulazione di bulk, come si compora realmente il materiale?
+HO sempre degli effetti di superficie dovuti al fatto che gli atomi sentono dei
+potenziali diversi da quelli interni
+### PBC
+Periodic Boundary conditions: modo per eliminare gli effetti di superficie
+nel codice significa sostituire alle distanze fra gli atomi la distanza fra
+l'atomo in considerazione e la sua immagine più vicina.
+Inoltre le forze cambiano di segno se ripeto l'immagine.
+Servono le dimensioni della cella
+Ogni volta che abbiamo una funzione del tipo:
+```{matlab}
+dx = x(i)- x(j);
+```
+Se vogliamo confrontare il codice PBC con il codice non PBC
+
+# 31-01
+Fare una simulazione microcanonica signfica che oltre al fatto che si conserva
+l'energia, se faccio una media temporale delle osservabili, questa è uguale
+ai valori dell'ensemble microcanonico (per ipotesi ergodica).
+
+In un ensemble canonico invece, ho una probabilità di effettuare una collisione
+della particella con il termostato. Da questa probabilità riottengo una
+distribuzione maxwelliana da cui estraggo la temperatura. Così facendo però
+perdo le informazioni momentanea dell'energia che avevano le particelle. In
+sostanza è come effettuare una simulazione di gas di particelle libere. La
+temperatura istantea calcolata non è costante (altrimenti sarebbe un ensemble
+isocinetico.) ma quella estratta dalla maxwelliana (quella vera) è conservata.
