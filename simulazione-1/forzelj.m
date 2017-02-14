@@ -36,8 +36,8 @@ function [fx, fy, fz, epot] = forzelj(epsilon, sigma, x, y, z, numero_vicini, ..
                            * ( 2*(sigma^6)/(r_ik^6) - 1)/(r_ik^8);
                fz(i) = fz(i) + 24*epsilon*(sigma^6)*(distanza_z) ...
                            * ( 2*(sigma^6)/(r_ik^6) - 1)/(r_ik^8);
-                epot = epot + 4*epsilon*((sigma/distanza_tot)^(12) ... 
-                            - (sigma/distanza_tot)^6);
+                epot = epot + 4*epsilon*((sigma/r_ik)^(12) ... 
+                            - (sigma/r_ik)^6);
 
 
             elseif r_ik < r_cutoff

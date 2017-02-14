@@ -1,0 +1,44 @@
+E medio       : 18.412308
+t_media       : 770.766742
+ΔE            : 1.7303015694
+sigma         : 0.0939752661
+Δt            : 0.000000 
+Δt troppo grande
+T simulazione : 1600
+-----------------------------------
+|Trovata temperatura soddisfacente|
+-----------------------------------
+E medio       : 7.200283
+t_media       : 594.097058
+ΔE            : 1.5539530524
+sigma         : 0.2158183384
+Δt            : 0.000000 
+Δt troppo grande
+T simulazione : 1200
+-----------------------------------
+|Trovata temperatura soddisfacente|
+-----------------------------------
+E medio       : 18.213931
+t_media       : 770.060800
+ΔE            : 1.7818843644
+sigma         : 0.0978308529
+Δt            : 0.000000 
+Δt troppo grande
+E medio       : 7.198440
+t_media       : 592.808858
+ΔE            : 1.4745222219
+sigma         : 0.2048391316
+Δt            : 0.000000 
+Δt troppo grande
+E medio       : 18.077951
+t_media       : 768.911507
+ΔE            : 1.7277559052
+sigma         : 0.0955725517
+Δt            : 0.000000 
+Δt troppo grande
+E medio       : 7.209479
+t_media       : 592.944241
+ΔE            : 1.4875792392
+sigma         : 0.2063365680
+Δt            : 0.000000 
+Δt troppo grande

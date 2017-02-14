@@ -6,8 +6,8 @@ function [numero_vicini, elenco_vicini, x_verlet, y_verlet, z_verlet] = ...
     x_verlet = zeros(numero_atomi, 1);
     y_verlet = zeros(numero_atomi, 1);
     z_verlet = zeros(numero_atomi, 1);
-    global n_call;
-    n_call = n_call + 1;
+    % global n_call;
+    % n_call = n_call + 1;
     
     % raggio verlet
     r_verlet = r_cutoff + 0.3;    

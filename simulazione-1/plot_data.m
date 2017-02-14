@@ -1,3 +1,4 @@
+
 data = load('simulazione-gabbie.txt');
 
 e_pot  = data(:,1);
